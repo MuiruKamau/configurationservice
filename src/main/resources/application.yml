@@ -1,24 +1,48 @@
+server:
+  port: 8083 # Or your desired port for Configuration Service
+
 spring:
+  application:
+    name: configuration-service # Important: Set the application name for Eureka registration
   datasource:
-    url: jdbc:mysql://localhost:3306/schoolmanagement
+    url: jdbc:mysql://localhost:3306/schoolmanagement?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true # Added createDatabaseIfNotExist
     username: root
     password: Ben@24
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
-    show-sql: true
+    show-sql: true # Set to false in production
     hibernate:
-      ddl-auto: update
+      ddl-auto: update # Use 'update' for production, 'create-drop' for dev (careful with data loss!)
       format_sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.MySQLDialect # MySQL Dialect
+
   web:
     cors:
       allowed-origins: "*"
       allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
       allowed-headers: "*"
 
-logging: # Add this section
-  level: # Indent under logging
-    org.springframework.security: DEBUG  # Indent under level
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+
+cloud:
+  eureka:
+    client:
+      fetch-registry: true
+      register-with-eureka: true
+
+logging:
+  level:
+    org.springframework.cloud.netflix.eureka: DEBUG
+    org.springframework.cloud.netflix.eureka.serviceregistry: DEBUG
+
+
