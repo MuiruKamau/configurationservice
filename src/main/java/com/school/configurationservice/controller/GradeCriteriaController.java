@@ -30,7 +30,7 @@ public class GradeCriteriaController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('TEACHER', 'ADMINISTRATOR')") // TEACHER and ADMIN can view
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER', 'ADMINISTRATOR')") // TEACHER and ADMIN can view
     public ResponseEntity<GradeCriteriaResponseDTO> getGradeCriteriaById(@PathVariable Long id) {
         GradeCriteriaResponseDTO gradeCriteria = gradeCriteriaService.getGradeCriteriaById(id);
         if (gradeCriteria != null) {
@@ -41,7 +41,7 @@ public class GradeCriteriaController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('TEACHER', 'ADMINISTRATOR')") // TEACHER and ADMIN can view all
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER', 'ADMINISTRATOR')")
     public ResponseEntity<List<GradeCriteriaResponseDTO>> getAllGradeCriteria() {
         List<GradeCriteriaResponseDTO> gradeCriteriaList = gradeCriteriaService.getAllGradeCriteria();
         return new ResponseEntity<>(gradeCriteriaList, HttpStatus.OK);

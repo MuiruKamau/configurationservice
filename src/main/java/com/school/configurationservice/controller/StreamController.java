@@ -34,7 +34,7 @@ public class StreamController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('TEACHER', 'ADMINISTRATOR')")
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER', 'ADMINISTRATOR')")
     public ResponseEntity<StreamResponseDTO> getStreamById(@PathVariable Long id) {
         StreamResponseDTO stream = streamService.getStreamById(id);
         if (stream != null) {
@@ -45,7 +45,7 @@ public class StreamController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('TEACHER', 'ADMINISTRATOR')")
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER', 'ADMINISTRATOR')")
     public ResponseEntity<List<StreamResponseDTO>> getAllStreams() {
         List<StreamResponseDTO> streams = streamService.getAllStreams();
         return new ResponseEntity<>(streams, HttpStatus.OK);

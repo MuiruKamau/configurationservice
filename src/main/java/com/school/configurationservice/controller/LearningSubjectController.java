@@ -30,7 +30,7 @@ public class LearningSubjectController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('TEACHER', 'ADMINISTRATOR')") // TEACHER and ADMIN can view
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER', 'ADMINISTRATOR')") // TEACHER and ADMIN can view
     public ResponseEntity<LearningSubjectResponseDTO> getLearningSubjectById(@PathVariable Long id) {
         LearningSubjectResponseDTO learningSubject = learningSubjectService.getLearningSubjectById(id);
         if (learningSubject != null) {
@@ -41,7 +41,7 @@ public class LearningSubjectController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('TEACHER', 'ADMINISTRATOR')") // TEACHER and ADMIN can view all
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER', 'ADMINISTRATOR')")// TEACHER and ADMIN can view all
     public ResponseEntity<List<LearningSubjectResponseDTO>> getAllLearningSubjects() {
         List<LearningSubjectResponseDTO> learningSubjects = learningSubjectService.getAllLearningSubjects();
         return new ResponseEntity<>(learningSubjects, HttpStatus.OK);
