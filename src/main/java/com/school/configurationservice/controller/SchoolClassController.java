@@ -6,6 +6,7 @@ import com.school.configurationservice.service.SchoolClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +23,14 @@ public class SchoolClassController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<SchoolClassResponseDTO> createSchoolClass(@RequestBody SchoolClassRequestDTO schoolClassRequestDTO) {
         SchoolClassResponseDTO createdSchoolClass = schoolClassService.createSchoolClass(schoolClassRequestDTO);
         return new ResponseEntity<>(createdSchoolClass, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMINISTRATOR')") // TEACHER and ADMIN can view
     public ResponseEntity<SchoolClassResponseDTO> getSchoolClassById(@PathVariable Long id) {
         SchoolClassResponseDTO schoolClass = schoolClassService.getSchoolClassById(id);
         if (schoolClass != null) {
@@ -38,12 +41,14 @@ public class SchoolClassController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMINISTRATOR')") // TEACHER and ADMIN can view all
     public ResponseEntity<List<SchoolClassResponseDTO>> getAllSchoolClasses() {
         List<SchoolClassResponseDTO> schoolClasses = schoolClassService.getAllSchoolClasses();
         return new ResponseEntity<>(schoolClasses, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<SchoolClassResponseDTO> updateSchoolClass(@PathVariable Long id, @RequestBody SchoolClassRequestDTO schoolClassRequestDTO) {
         SchoolClassResponseDTO updatedSchoolClass = schoolClassService.updateSchoolClass(id, schoolClassRequestDTO);
         if (updatedSchoolClass != null) {
@@ -54,6 +59,7 @@ public class SchoolClassController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Void> deleteSchoolClass(@PathVariable Long id) {
         if (schoolClassService.deleteSchoolClass(id)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

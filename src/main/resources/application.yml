@@ -44,5 +44,6 @@ logging:
   level:
     org.springframework.cloud.netflix.eureka: DEBUG
     org.springframework.cloud.netflix.eureka.serviceregistry: DEBUG
+    org.springframework.security : DEBUG
 
 

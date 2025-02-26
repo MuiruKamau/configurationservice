@@ -6,6 +6,7 @@ import com.school.configurationservice.service.StreamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class StreamController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<StreamResponseDTO> createStream(@RequestBody StreamRequestDTO streamRequestDTO) {
         try {
             StreamResponseDTO createdStream = streamService.createStream(streamRequestDTO);
@@ -32,6 +34,7 @@ public class StreamController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMINISTRATOR')")
     public ResponseEntity<StreamResponseDTO> getStreamById(@PathVariable Long id) {
         StreamResponseDTO stream = streamService.getStreamById(id);
         if (stream != null) {
@@ -42,12 +45,14 @@ public class StreamController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMINISTRATOR')")
     public ResponseEntity<List<StreamResponseDTO>> getAllStreams() {
         List<StreamResponseDTO> streams = streamService.getAllStreams();
         return new ResponseEntity<>(streams, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<StreamResponseDTO> updateStream(@PathVariable Long id, @RequestBody StreamRequestDTO streamRequestDTO) {
         try {
             StreamResponseDTO updatedStream = streamService.updateStream(id, streamRequestDTO);
@@ -62,6 +67,7 @@ public class StreamController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Void> deleteStream(@PathVariable Long id) {
         if (streamService.deleteStream(id)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

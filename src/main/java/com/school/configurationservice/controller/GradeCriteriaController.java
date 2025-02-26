@@ -6,6 +6,7 @@ import com.school.configurationservice.service.GradeCriteriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +23,14 @@ public class GradeCriteriaController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMINISTRATOR')") // Only ADMINISTRATOR can create
     public ResponseEntity<GradeCriteriaResponseDTO> createGradeCriteria(@RequestBody GradeCriteriaRequestDTO gradeCriteriaRequestDTO) {
         GradeCriteriaResponseDTO createdGradeCriteria = gradeCriteriaService.createGradeCriteria(gradeCriteriaRequestDTO);
         return new ResponseEntity<>(createdGradeCriteria, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMINISTRATOR')") // TEACHER and ADMIN can view
     public ResponseEntity<GradeCriteriaResponseDTO> getGradeCriteriaById(@PathVariable Long id) {
         GradeCriteriaResponseDTO gradeCriteria = gradeCriteriaService.getGradeCriteriaById(id);
         if (gradeCriteria != null) {
@@ -38,12 +41,14 @@ public class GradeCriteriaController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMINISTRATOR')") // TEACHER and ADMIN can view all
     public ResponseEntity<List<GradeCriteriaResponseDTO>> getAllGradeCriteria() {
         List<GradeCriteriaResponseDTO> gradeCriteriaList = gradeCriteriaService.getAllGradeCriteria();
         return new ResponseEntity<>(gradeCriteriaList, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMINISTRATOR')") // Only ADMINISTRATOR can update
     public ResponseEntity<GradeCriteriaResponseDTO> updateGradeCriteria(@PathVariable Long id, @RequestBody GradeCriteriaRequestDTO gradeCriteriaRequestDTO) {
         GradeCriteriaResponseDTO updatedGradeCriteria = gradeCriteriaService.updateGradeCriteria(id, gradeCriteriaRequestDTO);
         if (updatedGradeCriteria != null) {
@@ -54,6 +59,7 @@ public class GradeCriteriaController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMINISTRATOR')") // Only ADMINISTRATOR can delete
     public ResponseEntity<Void> deleteGradeCriteria(@PathVariable Long id) {
         if (gradeCriteriaService.deleteGradeCriteria(id)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
