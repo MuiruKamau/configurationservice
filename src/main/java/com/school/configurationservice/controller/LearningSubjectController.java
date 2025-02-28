@@ -67,4 +67,15 @@ public class LearningSubjectController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/by-name") // New endpoint to get subject by name
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER', 'ADMINISTRATOR')")
+    public ResponseEntity<LearningSubjectResponseDTO> getLearningSubjectByName(@RequestParam("name") String name) {
+        LearningSubjectResponseDTO learningSubject = learningSubjectService.getLearningSubjectByName(name);
+        if (learningSubject != null) {
+            return new ResponseEntity<>(learningSubject, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

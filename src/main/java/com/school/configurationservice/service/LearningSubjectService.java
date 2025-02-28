@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,7 +32,7 @@ public class LearningSubjectService {
     public LearningSubjectResponseDTO getLearningSubjectById(Long id) {
         return learningSubjectRepository.findById(id)
                 .map(learningSubject -> new LearningSubjectResponseDTO(learningSubject.getId(), learningSubject.getName()))
-                .orElse(null); // Handle not found scenario properly in controller
+                .orElse(null);
     }
 
     public List<LearningSubjectResponseDTO> getAllLearningSubjects() {
@@ -47,7 +48,7 @@ public class LearningSubjectService {
                     LearningSubject updatedLearningSubject = learningSubjectRepository.save(existingLearningSubject);
                     return new LearningSubjectResponseDTO(updatedLearningSubject.getId(), updatedLearningSubject.getName());
                 })
-                .orElse(null); // Handle not found scenario properly in controller
+                .orElse(null);
     }
 
     public boolean deleteLearningSubject(Long id) {
@@ -56,5 +57,11 @@ public class LearningSubjectService {
             return true;
         }
         return false;
+    }
+
+    public LearningSubjectResponseDTO getLearningSubjectByName(String name) {
+        Optional<LearningSubject> learningSubjectOptional = learningSubjectRepository.findByName(name);
+        return learningSubjectOptional.map(learningSubject -> new LearningSubjectResponseDTO(learningSubject.getId(), learningSubject.getName()))
+                .orElse(null);
     }
 }
