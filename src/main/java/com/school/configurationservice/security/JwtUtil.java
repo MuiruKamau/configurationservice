@@ -1,17 +1,10 @@
 package com.school.configurationservice.security;
- // Need UserRepository to fetch user roles
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Autowired; // Inject UserRepository
 import org.springframework.stereotype.Component;
-import org.springframework.security.core.userdetails.UserDetailsService; // Or use UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @Component
 public class JwtUtil {

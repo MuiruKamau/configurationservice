@@ -59,13 +59,7 @@ public class SecurityConfig {
                                 "/auth/public"
                         ).permitAll()
 
-                        // ADMINISTRATOR can access everything under /api/config/**
-                       // .requestMatchers("/api/config/**").hasRole("ADMINISTRATOR")
 
-                        // TEACHER can only perform GET requests under /api/config/**
-                        //.requestMatchers(HttpMethod.GET, "/api/config/**").hasRole("TEACHER")
-
-                        // Any other request must be authenticated
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
